@@ -1,21 +1,24 @@
 ![Platform](https://img.shields.io/badge/Platform-Python_3.12-blue)
+![Platform](https://img.shields.io/badge/Platform-PostgreSQL_16-blue)
 ![Tool](https://img.shields.io/badge/Tool-Jupyter_Notebook-orange)
+![Tool](https://img.shields.io/badge/Tool-SQL-orange)
 ![Domain](https://img.shields.io/badge/Domain-Healthcare_Analytics-lightgrey)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
 # NHS Referral to Treatment (RTT) Waiting Times
-## Exploratory Data Analysis | Financial Year 2025/26
+## Exploratory Data Analysis and SQL Analysis | Financial Year 2025/26
 
 ---
 
 ## Project Overview
 This project examined NHS England Referral to Treatment (RTT) waiting times
 across the 2025/26 financial year (April 2025 to February 2026). The analysis
-covers all NHS trusts and providers submitting monthly RTT returns to NHS England,
-producing 10 analytical outputs that track performance trends, identify specialties
-and trusts with the greatest waiting time pressures and assess progress in clearing
-the NHS backlog. March 2026 data had not been published at the time of this
-analysis and was therefore excluded. Q4 figures reflect January and February 2026 only.
+covers all NHS trusts and providers submitting monthly RTT returns to NHS England.
+It was conducted in two parts — an exploratory data analysis in Python producing
+9 analytical visualisations, and a SQL analysis in PostgreSQL producing 10
+analytical queries. March 2026 data had not been published at the time of this
+analysis and was therefore excluded. Q4 figures reflect January and February
+2026 only.
 
 ---
 
@@ -28,10 +31,11 @@ analysis and was therefore excluded. Q4 figures reflect January and February 202
 - Identify best and worst performing trusts by 18-week performance
 - Analyse performance variation across Integrated Care Boards (ICBs)
 - Track monthly trends in long waiters (52 plus and 104 plus weeks)
+- Measure month on month change in national 18-week performance
 
 ---
 
-### Data Source
+## Data Source
 | | |
 |---|---|
 | **Publisher** | NHS England |
@@ -50,6 +54,9 @@ analysis and was therefore excluded. Q4 figures reflect January and February 202
 | matplotlib | Chart production and formatting |
 | seaborn | Chart styling and heatmap production |
 | Jupyter Notebook | Interactive analysis environment |
+| PostgreSQL 16 | Database and SQL query execution |
+| psycopg2 | PostgreSQL database adapter for Python |
+| sqlalchemy | Database connection engine |
 
 ---
 
@@ -61,12 +68,14 @@ analysis and was therefore excluded. Q4 figures reflect January and February 202
 - **62.6%** of all waiting time was within 18 weeks
 - **37.1%** of patients were waiting between 18 and 52 weeks
 - Performance improved steadily from **Q1 (60.7%)** to **Q4 (61.9%)**
-- Significant variation was identified between the best and worst performing trusts
-- Trauma, Orthopaedic and surgical specialties showed the greatest waiting time pressure
+- **Oral Surgery** was the worst performing specialty at just **51.5%**
+- **NHS Mid and South Essex ICB** was the worst performing ICB at **49.0%**
+- Long waiters of 52 plus weeks declined from **27,757** in April 2025 to
+  **17,549** in February 2026
 
 ---
 
-## Analyses
+## Python Analysis
 | Step | Description |
 |---|---|
 | 1. Load and Combine Data | 11 monthly CSV files loaded and concatenated |
@@ -86,7 +95,25 @@ analysis and was therefore excluded. Q4 figures reflect January and February 202
 
 ---
 
+## SQL Queries
+| Query | Description |
+|---|---|
+| 1. National Performance by Month | Monthly 18-week performance vs 92% standard |
+| 2. Quarterly Performance Trend | Quarterly aggregation across 2025/26 |
+| 3. Total Waiting List Size | Monthly backlog size trend |
+| 4. Ten Worst Performing Specialties | Specialties with lowest 18-week performance |
+| 5. Ten Worst Performing Trusts | Trusts with lowest 18-week performance |
+| 6. Ten Best Performing Trusts | Trusts with highest 18-week performance |
+| 7. Long Waiters by Month | Monthly trend of 52 plus and 104 plus week waiters |
+| 8. Ten Worst Performing ICBs | ICBs with lowest 18-week performance |
+| 9. Performance Gap to 92% Target | Gap between specialty performance and 92% standard |
+| 10. Month on Month Performance Change | Monthly change using LAG window function |
+
+---
+
 ## How to Run
+
+### Python Analysis
 1. Clone the repository:
 ```bash
 git clone https://github.com/Kingsley-Eboh/nhs-rtt-analysis.git
@@ -97,7 +124,7 @@ cd nhs-rtt-analysis
 ```
 3. Install required libraries:
 ```bash
-pip install pandas matplotlib seaborn
+pip install pandas matplotlib seaborn sqlalchemy psycopg2-binary
 ```
 4. Download the monthly RTT full extract CSV files from NHS England and
    place them in the `data/` folder:
@@ -109,6 +136,21 @@ jupyter notebook
 ```
 6. Open `notebooks/nhs_rtt_analysis.ipynb` and run all cells:
 **Kernel → Restart & Run All**
+
+### SQL Analysis
+1. Set up PostgreSQL database:
+```bash
+sudo -u postgres psql
+CREATE DATABASE nhs_rtt;
+CREATE USER nhs_user WITH PASSWORD 'nhs_password';
+GRANT ALL PRIVILEGES ON DATABASE nhs_rtt TO nhs_user;
+\q
+```
+2. Run the Python notebook first to load data into PostgreSQL
+3. Execute the SQL queries:
+```bash
+psql -U nhs_user -d nhs_rtt -h localhost -f sql/nhs_rtt_analysis.sql
+```
 
 ---
 
@@ -127,6 +169,8 @@ nhs-rtt-analysis/
 │   ├── trust_variation.png            # Trust level variation
 │   ├── icb_variation.png              # ICB level variation
 │   └── heatmap_specialty_quarter.png  # Heatmap by specialty and quarter
+├── sql/
+│   └── nhs_rtt_analysis.sql           # All 10 SQL queries with comments
 ├── .gitignore                         # Excludes data files and checkpoints
 └── README.md                          # Project documentation
 ```
