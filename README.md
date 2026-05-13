@@ -31,13 +31,14 @@ analysis and was therefore excluded. Q4 figures reflect January and February 202
 
 ---
 
-## Data Source
-**Publisher:** NHS England
-**Dataset:** Consultant-led RTT Waiting Times 2025/26
-**Coverage:** Approximately 515 NHS trusts and providers per month across
-23 treatment specialties
-**Frequency:** Monthly
-**Access:** [NHS England Statistics](https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/)
+### Data Source
+| | |
+|---|---|
+| **Publisher** | NHS England |
+| **Dataset** | Consultant-led RTT Waiting Times 2025/26 |
+| **Coverage** | Approximately 515 NHS trusts and providers per month across 23 treatment specialties |
+| **Frequency** | Monthly |
+| **Access** | [NHS England Statistics](https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/) |
 
 ---
 
@@ -112,6 +113,7 @@ jupyter notebook
 ---
 
 ## Project Structure
+```
 nhs-rtt-analysis/
 ├── notebooks/
 │   └── nhs_rtt_analysis.ipynb         # Main analysis notebook
@@ -127,7 +129,7 @@ nhs-rtt-analysis/
 │   └── heatmap_specialty_quarter.png  # Heatmap by specialty and quarter
 ├── .gitignore                         # Excludes data files and checkpoints
 └── README.md                          # Project documentation
-
+```
 ---
 
 ## Evidence
