@@ -15,11 +15,11 @@
 This project examined NHS England Referral to Treatment (RTT) waiting times
 across the 2025/26 financial year (April 2025 to February 2026). The analysis
 covers all NHS trusts and providers submitting monthly RTT returns to NHS England.
-It was conducted in two parts — an exploratory data analysis in Python producing
-9 analytical visualisations, a SQL analysis in PostgreSQL producing 10
-analytical queries and an interactive Power BI. March 2026 data had not been published at the time of this
-analysis and was therefore excluded. Q4 figures reflect January and February
-2026 only.
+It was conducted in three parts: an exploratory data analysis in Python producing
+9 analytical visualisations, a SQL analysis in PostgreSQL producing 10 analytical
+queries, and an interactive Power BI dashboard connecting directly to the PostgreSQL
+database. March 2026 data had not been published at the time of this analysis and
+was therefore excluded. Q4 figures reflect January and February 2026 only.
 
 ---
 
@@ -67,12 +67,12 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 - The NHS missed the 92% 18-week standard in **every single reporting period**
 - National performance ranged between **59.7% and 62.5%** across the year
 - The overall waiting list reduced from **7.42 million** in April 2025 to
-  **7.16 million** in February 2026, a reduction of approximately 265,000 patients
+  **7.16 million** in February 2026 — a reduction of approximately 265,000 patients
 - **62.6%** of all waiting time was within 18 weeks
 - **37.1%** of patients were waiting between 18 and 52 weeks
 - Performance improved steadily from **Q1 (60.7%)** to **Q4 (61.9%)**
 - **Oral Surgery** was the worst performing specialty at just **51.5%**
-- **NHS Mid and South Essex ICB** was the worst performing ICB at **49.0%**
+- **NHS Mid and South Essex ICB** was the worst performing ICB at **52.0%**
 - Long waiters of 52 plus weeks declined from **27,757** in April 2025 to
   **17,549** in February 2026
 
@@ -83,7 +83,7 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 |---|---|
 | 1. Load and Combine Data | 11 monthly CSV files loaded and concatenated |
 | 2. Quarter Labels | NHS financial year quarters assigned |
-| 3. Data Quality Assessment | Missing values, duplicates and data types checked |
+| 3. Data Quality Assessment | Missing values and data types checked |
 | 4. Data Cleaning | Weekly band nulls filled and commissioner fields standardised |
 | 5. National Performance Trend | Monthly 18-week performance vs 92% standard |
 | 6. Quarterly Performance Trend | Quarterly aggregation and bar chart |
@@ -116,69 +116,101 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 ---
 
 ## Power BI Dashboard
-An interactive dashboard was built in Power BI Desktop connecting directly to the PostgreSQL database. The database presents key findings across two pages covering national performance trends, quarterly aggregations, specialty and trust level variation, long waitere trends and ICB level analysis.
-
+An interactive dashboard was built in Power BI Desktop connecting directly
+to the PostgreSQL database. The dashboard presents key findings across two
+pages covering national performance trends, quarterly aggregations, specialty
+and trust level variation, long waiter trends and ICB level analysis.
 
 | Visual | Description |
 |---|---|
-| 1. Waiting List Size (Feb 2026)| Latest monthly waiting list size |
-| 2. Overall 18 Week Performance | National performance across 2025/26 |
-| 3. Avg Monthly 52+ Week Waiters| Average monthly very long waiters |
+| 1. Waiting List Size (Feb 2026) | Latest monthly waiting list size |
+| 2. Overall 18-Week Performance | National performance across 2025/26 |
+| 3. Avg Monthly 52+ Week Waiters | Average monthly long waiters |
 | 4. Avg Monthly 104+ Week Waiters | Average monthly very long waiters |
 | 5. Monthly Performance Trend | Monthly 18-week performance vs 92% standard |
 | 6. Quarterly Performance Trend | Quarterly aggregation across 2025/26 |
 | 7. Top 10 Worst Specialties | Specialties with lowest 18-week performance |
-| 8. Top 10 Worst Trusts | Trusts with lowest 18-week performance|
+| 8. Top 10 Worst Trusts | Trusts with lowest 18-week performance |
 | 9. Monthly Long Waiters | Monthly trend of 52 plus and 104 plus week waiters |
-| 10. Top 10 Worst ICBc | ICBs with lowest 18-week performance |
+| 10. Top 10 Worst ICBs | ICBs with lowest 18-week performance |
 
 ---
 
 ## How to Run
 
-### Python Analysis
-1. Clone the repository:
+### Prerequisites
+- Python 3.8 or higher
+- PostgreSQL 14 or higher
+- Power BI Desktop (free) — https://powerbi.microsoft.com/desktop
+- Jupyter Notebook
+
+---
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Kingsley-Eboh/nhs-rtt-analysis.git
-```
-2. Navigate to the project folder:
-```bash
 cd nhs-rtt-analysis
 ```
-3. Install required libraries:
-```bash
-pip install pandas matplotlib seaborn sqlalchemy psycopg2-binary
-```
-4. Download the monthly RTT full extract CSV files from NHS England and
-   place them in the `data/` folder:
-   https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/
 
-5. Launch Jupyter Notebook:
+---
+
+### 2. Install Dependencies
+```bash
+pip install pandas matplotlib seaborn sqlalchemy psycopg2-binary jupyter
+```
+
+---
+
+### 3. Download the Data
+Download the monthly RTT full extract CSV files from NHS England for each
+month from April 2025 to February 2026 and place them in the `data/` folder:
+
+https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/
+
+Look for the **Consultant-led Referral to Treatment Waiting Times** section
+and download the full provider-level extract for each month.
+
+---
+
+### 4. Run the Python Analysis
+Launch Jupyter Notebook and open `notebooks/nhs_rtt_analysis.ipynb`:
+
 ```bash
 jupyter notebook
 ```
-6. Open `notebooks/nhs_rtt_analysis.ipynb` and run all cells:
-**Kernel → Restart & Run All**
 
-### SQL Analysis
-1. Set up PostgreSQL database:
+Select **Kernel → Restart and Run All** to execute all cells in sequence.
+The final cell exports pre-aggregated summary tables to PostgreSQL for use
+in the Power BI dashboard.
+
+---
+
+### 5. Set Up PostgreSQL
+Create a local PostgreSQL database and user with the appropriate privileges.
+Update the connection string in the notebook's final cell to match your
+local database configuration before running the export step.
+
+Refer to the official PostgreSQL documentation for setup guidance:
+https://www.postgresql.org/docs/
+
+---
+
+### 6. Run the SQL Queries
+Once the database is populated execute the analytical queries:
+
 ```bash
-sudo -u postgres psql
-CREATE DATABASE nhs_rtt;
-CREATE USER nhs_user WITH PASSWORD 'nhs_password';
-GRANT ALL PRIVILEGES ON DATABASE nhs_rtt TO nhs_user;
-\q
+psql -U <your_user> -d <your_database> -h localhost -f sql/nhs_rtt_analysis.sql
 ```
-2. Run the Python notebook first to load data into PostgreSQL
-3. Execute the SQL queries:
-```bash
-psql -U nhs_user -d nhs_rtt -h localhost -f sql/nhs_rtt_analysis.sql
-```
-### Power BI Dashboard
-1. Run the puthon notebook first to export summary tables to PostgreSQL
-2. Open Power BI Desktop
-3. Connect to PostgreSQL instances using your host IP address, database and username
-   
+
+---
+
+### 7. Open the Power BI Dashboard
+Open `powerbi/nhs_rtt_dashboard.pbix` in Power BI Desktop and reconnect
+to your local PostgreSQL instance using your configured credentials when prompted.
+
+To view the dashboard without any local setup open the exported PDF:
+`powerbi/nhs_rtt_dashboard.pdf`
+
 ---
 
 ## Project Structure
@@ -198,6 +230,9 @@ nhs-rtt-analysis/
 │   └── heatmap_specialty_quarter.png  # Heatmap by specialty and quarter
 ├── sql/
 │   └── nhs_rtt_analysis.sql           # All 10 SQL queries with comments
+├── powerbi/
+│   ├── nhs_rtt_dashboard.pbix         # Power BI Desktop dashboard file
+│   └── nhs_rtt_dashboard.pdf          # Exported PDF of the dashboard
 ├── .gitignore                         # Excludes data files and checkpoints
 └── README.md                          # Project documentation
 ```
