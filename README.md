@@ -79,23 +79,25 @@ was therefore excluded. Q4 figures reflect January and February 2026 only.
 ---
 
 ## Python Analysis
+## Python Analysis
 | Step | Description |
 |---|---|
-| 1. Load and Combine Data | 11 monthly CSV files loaded and concatenated |
-| 2. Quarter Labels | NHS financial year quarters assigned |
-| 3. Data Quality Assessment | Missing values and data types checked |
-| 4. Data Cleaning | Weekly band nulls filled and commissioner fields standardised |
-| 5. National Performance Trend | Monthly 18-week performance vs 92% standard |
-| 6. Quarterly Performance Trend | Quarterly aggregation and bar chart |
-| 7. Total Waiting List Size | Monthly backlog size trend |
-| 8. Waiting Time Distribution | Patients grouped into four waiting time bands |
-| 9. Long Waiters Analysis | Monthly trend of 52 plus and 104 plus week waiters |
-| 10. Specialty Level Breakdown | 10 worst performing specialties |
-| 11. Trust Level Variation | 10 best and worst performing trusts |
-| 12. Commissioner Level Analysis | 10 best and worst performing ICBs |
-| 13. Heatmap | 18-week performance by specialty and quarter |
-| 14. Summary Insights | Key findings and conclusions |
-| 15. PostgreSQL Export | Pre-aggregated summary tables exported for Power BI |
+| 1. Import Libraries and Locate Files | Required libraries imported and data files located |
+| 2. Load and Combine Data | 11 monthly CSV files loaded and concatenated |
+| 3. Assign Quarter Labels | NHS financial year quarters assigned |
+| 4. Data Quality Assessment | Missing values and data types checked |
+| 5. Data Cleaning | Weekly band nulls filled and commissioner fields standardised |
+| 6. National Performance Trend | Monthly 18-week performance vs 92% standard |
+| 7. Quarterly Performance Trend | Quarterly aggregation and bar chart |
+| 8. Total Waiting List Size | Monthly backlog size trend |
+| 9. Waiting Time Distribution | Patients grouped into four waiting time bands |
+| 10. Long Waiters Analysis | Monthly trend of 52 plus and 104 plus week waiters |
+| 11. Specialty Level Breakdown | 10 worst performing specialties |
+| 12. Trust Level Variation | 10 best and worst performing trusts |
+| 13. Commissioner Level Analysis | 10 best and worst performing ICBs |
+| 14. Heatmap | 18-week performance by specialty and quarter |
+| 15. Summary Insights | Key findings and conclusions |
+| 16. PostgreSQL Export | Pre-aggregated summary tables exported for Power BI |
 
 ---
 
@@ -266,6 +268,12 @@ nhs-rtt-analysis/
 
 ### Step 13 — Heatmap by Specialty and Quarter
 [![heatmap_specialty_quarter](figures/heatmap_specialty_quarter.png)](figures/heatmap_specialty_quarter.png)
+
+### Power BI Dashboard — Page 1 (Performance Overview)
+[![powerbi_page1](powerbi/powerbi_page1.png)](powerbi/powerbi_page1.png)
+
+### Power BI Dashboard — Page 2 (Provider and Specialty Analysis)
+[![powerbi_page2](powerbi/powerbi_page2.png)](powerbi/powerbi_page2.png)
 
 ---
 
