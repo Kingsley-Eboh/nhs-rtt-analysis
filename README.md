@@ -2,11 +2,12 @@
 ![Platform](https://img.shields.io/badge/Platform-PostgreSQL_16-blue)
 ![Tool](https://img.shields.io/badge/Tool-Jupyter_Notebook-orange)
 ![Tool](https://img.shields.io/badge/Tool-SQL-orange)
+![Tool](https://img.shields.io/badge/Tool-Power_BI-yellow)
 ![Domain](https://img.shields.io/badge/Domain-Healthcare_Analytics-lightgrey)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
 # NHS Referral to Treatment (RTT) Waiting Times
-## Exploratory Data Analysis and SQL Analysis | Financial Year 2025/26
+## Exploratory Data Analysis, SQL Analysis and Power BI Dashboard | Financial Year 2025/26
 
 ---
 
@@ -15,8 +16,8 @@ This project examined NHS England Referral to Treatment (RTT) waiting times
 across the 2025/26 financial year (April 2025 to February 2026). The analysis
 covers all NHS trusts and providers submitting monthly RTT returns to NHS England.
 It was conducted in two parts — an exploratory data analysis in Python producing
-9 analytical visualisations, and a SQL analysis in PostgreSQL producing 10
-analytical queries. March 2026 data had not been published at the time of this
+9 analytical visualisations, a SQL analysis in PostgreSQL producing 10
+analytical queries and an interactive Power BI. March 2026 data had not been published at the time of this
 analysis and was therefore excluded. Q4 figures reflect January and February
 2026 only.
 
@@ -32,6 +33,7 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 - Analyse performance variation across Integrated Care Boards (ICBs)
 - Track monthly trends in long waiters (52 plus and 104 plus weeks)
 - Measure month on month change in national 18-week performance
+- Present findings in an interactive Power BI dashboard
 
 ---
 
@@ -57,6 +59,7 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 | PostgreSQL 16 | Database and SQL query execution |
 | psycopg2 | PostgreSQL database adapter for Python |
 | sqlalchemy | Database connection engine |
+| Power BI Desktop | Interactive dashboard and data visualisation |
 
 ---
 
@@ -64,7 +67,7 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 - The NHS missed the 92% 18-week standard in **every single reporting period**
 - National performance ranged between **59.7% and 62.5%** across the year
 - The overall waiting list reduced from **7.42 million** in April 2025 to
-  **7.16 million** in February 2026 — a reduction of approximately 265,000 patients
+  **7.16 million** in February 2026, a reduction of approximately 265,000 patients
 - **62.6%** of all waiting time was within 18 weeks
 - **37.1%** of patients were waiting between 18 and 52 weeks
 - Performance improved steadily from **Q1 (60.7%)** to **Q4 (61.9%)**
@@ -92,6 +95,7 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 | 12. Commissioner Level Analysis | 10 best and worst performing ICBs |
 | 13. Heatmap | 18-week performance by specialty and quarter |
 | 14. Summary Insights | Key findings and conclusions |
+| 15. PostgreSQL Export | Pre-aggregated summary tables exported for Power BI |
 
 ---
 
@@ -108,6 +112,25 @@ analysis and was therefore excluded. Q4 figures reflect January and February
 | 8. Ten Worst Performing ICBs | ICBs with lowest 18-week performance |
 | 9. Performance Gap to 92% Target | Gap between specialty performance and 92% standard |
 | 10. Month on Month Performance Change | Monthly change using LAG window function |
+
+---
+
+## Power BI Dashboard
+An interactive dashboard was built in Power BI Desktop connecting directly to the PostgreSQL database. The database presents key findings across two pages covering national performance trends, quarterly aggregations, specialty and trust level variation, long waitere trends and ICB level analysis.
+
+
+| Visual | Description |
+|---|---|
+| 1. Waiting List Size (Feb 2026)| Latest monthly waiting list size |
+| 2. Overall 18 Week Performance | National performance across 2025/26 |
+| 3. Avg Monthly 52+ Week Waiters| Average monthly very long waiters |
+| 4. Avg Monthly 104+ Week Waiters | Average monthly very long waiters |
+| 5. Monthly Performance Trend | Monthly 18-week performance vs 92% standard |
+| 6. Quarterly Performance Trend | Quarterly aggregation across 2025/26 |
+| 7. Top 10 Worst Specialties | Specialties with lowest 18-week performance |
+| 8. Top 10 Worst Trusts | Trusts with lowest 18-week performance|
+| 9. Monthly Long Waiters | Monthly trend of 52 plus and 104 plus week waiters |
+| 10. Top 10 Worst ICBc | ICBs with lowest 18-week performance |
 
 ---
 
@@ -151,7 +174,11 @@ GRANT ALL PRIVILEGES ON DATABASE nhs_rtt TO nhs_user;
 ```bash
 psql -U nhs_user -d nhs_rtt -h localhost -f sql/nhs_rtt_analysis.sql
 ```
-
+### Power BI Dashboard
+1. Run the puthon notebook first to export summary tables to PostgreSQL
+2. Open Power BI Desktop
+3. Connect to PostgreSQL instances using your host IP address, database and username
+   
 ---
 
 ## Project Structure
